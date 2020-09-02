@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Humanoide </title>
+    <style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+        #info {
+                position: absolute;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+                color: #FFFFFF;
+            }
+    </style>
+  </head>
+  <body>
+      <div id="info">
+        
+            Andres Castro <br/>
+              Juliana Ordoñez<br/>
+                        
+        </div>
+      
+        <script src="js/three.min.js"></script>
+        <script src="js/controls/OrbitControls.js"></script>
+        <script src='js/libs/dat.gui.min.js'></script>
+		<script src='js/libs/stats.min.js'></script>
+            
+    <script>
+        
+        //VARIABLES 
+
+        var scene, aspect, camera, renderer;
+        var stats;
+        var startTime = Date.now();
+
+               //Variables de los Angulos de Rotacion 
+        var piernaIZQ_X = 0, piernaIZ_Y = 0, piernaIZQ_Z = 0; 
+        var angleX = 0, angleY = 0 ,angleZ = 0;
+        var piernaDR_X = 0, piernaDR_Y = 0, piernaDR_Z = 0;
+        var rodillaIZQ_X = 0 , rodillaIZQ_Y = 0, rodillaIZQ_Z = 0;
+        var rodillaDR_X = 0, rodillaDR_Y = 0, rodillaDR_Z = 0;
+        var hombroIZQ_X = 0, hombroIZQ_Y = 0, hombroIZQ_Z = 0;      
+        var hombroDR_X = 0, hombroDR_Y = 0, hombroDR_Z = 0;
+        var codoIZQ_X = 0, codoIZQ_Y = 0, codoIZQ_Z = 0;
+        var codoDR_X = 0, codoDR_Y = 0, codoDR_Z = 0; 
+
+        init();
+        animate();
+        
+           function init() {
+                scene = new THREE.Scene();
+                aspect = window.innerWidth / window.innerHeight;
+                camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
+                renderer = new THREE.WebGLRenderer();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+				
+				stats = new Stats();
+				document.body.appendChild( stats.dom );
+
+        
+			//ELEMENTOS DE ESCENA
+							  
+			var size = 50;
+			var arrowSize = 1;
+			var divisions = size;
+			var origin = new THREE.Vector3( 0, 0, 0 );
+			var x = new THREE.Vector3( 1, 0, 0 );
+			var y = new THREE.Vector3( 0, 1, 0 );
+		  	var z = new THREE.Vector3( 0, 0, 1 );
+			var color1 = new THREE.Color( 0xFFFFFF );
+		  	var color2 = new THREE.Color( 0x333333 );
+		  	var colorR = new THREE.Color( 0xAA0000 );
+		  	var colorG = new THREE.Color( 0x00AA00 );
+		  	var colorB = new THREE.Color( 0x0000AA );
+		  	var colorGd = new THREE.Color( 0x66AA66 );
+		  	
+		  
+        
+            //CREAR LAS FLECHAS QUE INDICAN LOS EJES DE COORDENADAS 3D
+            var arrowX = new THREE.ArrowHelper( x, origin, arrowSize, colorR );
+            var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
+            var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
+        
+        
+            //crea primer cubo  torso 
+        
+           Cubo = new THREE.Geometry();
+	       var resCub=10; //cantidad de puntos en la linea del cubo	
+            for( var i = 0; i < resCub; i++){
+            for( var j = 0; j < resCub; j++){
+				for( var k = 0; k < resCub; k++){
+                   var punto1 = new THREE.Vector3();
+                   punto1.x =  (i/2);// tamaño del cubo 
+                   punto1.y = (j/2);
+                   punto1.z = k/2;
+                    Cubo.vertices.push( punto1 );
+                    
+					}
+				}
+			}
+        
+         //crea segundo cubo sintura 
+        
+            Cubo2 = new THREE.Geometry();
+	       var resCub=10; //cantidad de puntos en la linea del cubo
+            var matRec = new THREE.PointsMaterial( { color: 'white', size: 0.1 } );	
+            for( var i = 0; i < resCub; i++){
+            for( var j = 0; j < resCub; j++){
+				for( var k = 0; k < resCub; k++){
+                   var punto1 = new THREE.Vector3();
+                   punto1.x =  (i/1.5);// tamaño del cubo 
+                   punto1.y = (j/3);
+                   punto1.z = (k/1.5);
+                Cubo2.vertices.push( punto1 );
+                    
+					}
+				}
+			}
+        
+        //crea tercer cubo cabeza
+        
+            Cubo3 = new THREE.Geometry();
+	       var resCub=10; //cantidad de puntos en la linea del cubo
+            var matRec = new THREE.PointsMaterial( { color: 'white', size: 0.1 } );	
+            for( var i = 0; i < resCub; i++){
+            for( var j = 0; j < resCub; j++){
+				for( var k = 0; k < resCub; k++){
+                   var punto1 = new THREE.Vector3();
+                   punto1.x =  (i/3.5);// tamaño del cubo 
+                   punto1.y = (j/3.5);
+                   punto1.z = (k/3.5);
+                Cubo3.vertices.push( punto1 );
+                    
+					}
+				}
+			}
+	
+		//----esfera---------
+		var geoEsfera = new THREE.Geometry();
+            var zTemp = 0;
+            var resXY = 25.0;
+			var resZ = 20.0;
+            for( var i = 0; i < resZ; i++){
+                for( var j = 0; j < resXY; j++){
+                    var punto = new THREE.Vector3();
+                    punto.x = 1 * Math.cos( ( j * 2 * Math.PI )/resXY) * Math.sin( ( i * Math.PI )/ resZ) ;
+                    punto.y = 1 * Math.sin( ( j * 2 * Math.PI )/resXY) * Math.sin( ( i * Math.PI )/ resZ) ;
+                    punto.z = 1 * Math.cos( ( i * Math.PI )/resZ) ;
+                    geoEsfera.vertices.push( punto );
+                }
+            }
+        
+       
+			
+			
+		//---cilindro Pierna------
+        
+		    var geoCilindro = new THREE.Geometry(); //funcion cilindro
+            var zTemp = 0;
+            var res = 10.0; //cant de rayas del cilindro
+            for( var i = 0; i < res; i++){
+                for( var j = 0; j < res; j++){
+                    var punto = new THREE.Vector3();
+                    punto.x = 0.5 * Math.cos( ( j * 2 * Math.PI )/res);
+                    punto.y = 3 * i/res;
+                    punto.z = 0.5 * Math.sin( ( j * 2 * Math.PI )/res);
+                    geoCilindro.vertices.push( punto );
+                }
+            }
+        
+        //---cilindro BRAZOS------ 
+        
+		    var geoCilindro2 = new THREE.Geometry(); //funcion cilindro
+            var zTemp = 0;
+            var res = 10.0; //cant de rayas del cilindro
+            for( var i = 0; i < res; i++){
+                for( var j = 0; j < res; j++){
+                    var punto = new THREE.Vector3();
+                    punto.x = 0.5 * Math.cos( ( j * 2 * Math.PI )/res);
+                    punto.y = 2.3 * i/res;
+                    punto.z = 0.5 * Math.sin( ( j * 2 * Math.PI )/res);
+                    geoCilindro2.vertices.push( punto );
+                }
+            }
+        
+        
+            var matPunto = new THREE.PointsMaterial ({color: 0xFFFFFF, size: 0.1});
+
+        
+        //TORSO
+        
+        torso = new THREE.Points(Cubo, matPunto);//jerarquia inicial
+        
+        //Pierda Izquierda
+        gluteoIZQ = new THREE.Points(geoEsfera, matPunto); 
+        rodillaIZQ = new THREE.Points(geoEsfera, matPunto) 
+        femurIZQ = new THREE.Points(geoCilindro, matPunto); 
+        musloIZQ = new THREE.Points(geoCilindro, matPunto);
+        
+        //Pierda Derecha
+        gluteoDR = new THREE.Points(geoEsfera, matPunto); 
+        rodillaDR = new THREE.Points(geoEsfera, matPunto); 
+        femurDR = new THREE.Points(geoCilindro, matPunto);
+        musloDR = new THREE.Points(geoCilindro, matPunto); 
+        
+        //Pecho  
+        pecho = new THREE.Points(Cubo2, matPunto);//jerarquia inicial
+        
+        // Brazos IZQUIERDO
+        hombroIZQ = new THREE.Points(geoEsfera, matPunto); 
+        anteBrazoIZ= new THREE.Points(geoCilindro2, matPunto); 
+        codoIZQ = new THREE.Points(geoEsfera, matPunto); 
+        brazoIZQ = new THREE.Points(geoCilindro2, matPunto);
+        
+        // BRAZO Derecho
+        hombroDR = new THREE.Points(geoEsfera, matPunto); //braIZ1
+        anteBrazoDR= new THREE.Points(geoCilindro2, matPunto);
+        codoDR = new THREE.Points(geoEsfera, matPunto);
+        brazoDR = new THREE.Points(geoCilindro2, matPunto);
+        
+        //Cubo CABEZA
+        
+        cabeza = new THREE.Points(Cubo3, matRec);
+               
+        
+        //Pegar TODO 
+        
+             //SOLO PIERNAS  
+        torso.add(pecho, gluteoIZQ, gluteoDR);
+          //Pegar pierna Izquierda
+        gluteoIZQ.add(femurIZQ);
+        femurIZQ.add(rodillaIZQ);
+        rodillaIZQ.add(musloIZQ); 
+           //PEGAR PIERNA DERECHA 
+        gluteoDR.add(femurDR);
+        femurDR.add(rodillaDR); 
+        rodillaDR.add(musloDR);   
+         //Pegar la Cabeza                
+        pecho.add(cabeza); 
+               
+               //SOLO BRAZOS 
+        pecho.add(hombroIZQ, hombroDR, cabeza);
+           //Pegar barzo Izquierdo
+        hombroIZQ.add(anteBrazoIZ);   
+        anteBrazoIZ.add(codoIZQ);
+        codoIZQ.add(brazoIZQ); 
+           //Pegar brazo Derrecho 
+        hombroDR.add(anteBrazoDR); 
+        anteBrazoDR.add(codoDR);
+        codoDR.add(brazoDR);
+        
+        
+        //Scena
+         
+		scene.add(torso, camera,arrowX, arrowY, arrowZ);
+        
+            
+        //MOVER LA CAMARA
+			camera.position.x = 1;
+			camera.position.y = 3;	 
+		  	camera.position.z = 30;			
+		  	camera.lookAt( origin );
+        
+        //Translacion Cabeza
+        cabeza.translateX(1.5);
+        cabeza.translateY(3)
+        cabeza.translateZ(2);
+        
+         //Tranlacion de un torso base
+		torso.translateX(-0.5);
+        torso.translateY(0);
+        torso.translateZ(-2);
+       
+        //Cintua 
+        pecho.translateX(-1);
+        pecho.translateY(4);
+        pecho.translateZ(-1);
+        
+        //Tranlacion de un pierna Izquierda esfera 1
+        gluteoIZQ.translateX(1);
+        gluteoIZQ.translateY(-1);
+        gluteoIZQ.translateZ(2);       
+        
+         //Tranlacion de un pierna Izquierda cilindro 1
+        femurIZQ.translateX(0);
+        femurIZQ.translateY(-3.5);
+        femurIZQ.translateZ(0);       
+        
+         //Tranlacion de un pierna Izquierda esfera 2
+         rodillaIZQ.translateX(0);
+         rodillaIZQ.translateY(-1);
+        
+         //Tranlacion de un pierna Izquierda cilindro 2
+        musloIZQ.translateX(0);
+        musloIZQ.translateY(-3.5);
+        
+         //Tranlacion de un pierna Derecho Esfera 1
+        gluteoDR.translateX(3.5);
+        gluteoDR.translateY(-1);
+        gluteoDR.translateZ(2);
+               
+        //Tranlacion de un pierna Derecho Esfera 2
+        rodillaDR.translateX(0);
+        rodillaDR.translateY(-1);
+        
+            
+        //Tranlacion de un pierna Drecha cilindro 2
+        musloDR.translateX(0);
+        musloDR.translateY(-3.5);
+            
+		//Tranlacion de un pierna Drecha cilindro 2
+        femurDR.translateX(0);
+        femurDR.translateY(-3.5);
+        
+        
+        //Tranlacion de un Brazo Drecha esfera 1
+        hombroIZQ.translateX(-1);
+        hombroIZQ.translateY(1.5);
+        hombroIZQ.translateZ(3);
+        
+        //Tranlacion de un Brazo Drecha esfera 2
+        anteBrazoIZ.translateX(0);
+        anteBrazoIZ.translateY(-3);
+        
+        //Tranlacion de un Brazo Izquierdo esfera 1
+        codoIZQ.translateX(0);
+        codoIZQ.translateY(-1);
+        
+        //Tranlacion de un Brazo Izquiero esfera 2
+        brazoIZQ.translateX(0);
+        brazoIZQ.translateY(-3);
+        
+        //Translacion de un Brazo Izquierdo cilindro 1
+        hombroDR.translateX(7)
+        hombroDR.translateY(1.5);
+        hombroDR.translateZ(3);
+        
+        
+        //Translacion de un Brazo Izquierdo cilindro 2
+        anteBrazoDR.translateX(0)
+        anteBrazoDR.translateY(-3);
+        
+        //Translacion de un Brazo Derecho cilindro 1
+        codoDR.translateX(0)
+        codoDR.translateY(-1);
+        
+        //Translacion de un Brazo Derecho cilindro 2
+        brazoDR.translateX(0)
+        brazoDR.translateY(-3);
+
+        }
+    
+                
+        //ANGULOS DE ROTACION
+                var rotationAngulares = {
+                    
+                    cuerpoX:0,
+                    cuerpoY:0,
+                    cuerpoZ:0,
+                    piernaIZQ:0,
+                    piernaDR:0,
+                    rodillaIZQ:0,
+                    rodillaDR:0,
+                    hombro_X:0,
+                    hombro_Z:0,
+                    hombroDerecho_X:0,
+                    hombroDerecho_Z:0,
+                    codoI_X:0,
+                    codoD_X:0
+                }
+
+                var rotationCuerpo = function () {
+                    angleX = THREE.Math.degToRad(rotationAngulares.cuerpoX);
+                    angleY = THREE.Math.degToRad(rotationAngulares.cuerpoY);
+                    angleZ = THREE.Math.degToRad(rotationAngulares.cuerpoZ);
+                    render();
+                }
+
+                var rotationPiernaIZQ = function (){
+                    piernaIZQ_X = THREE.Math.degToRad(rotationAngulares.piernaIZQ);  
+                }
+
+                var rotationPiernaDR = function(){
+                    piernaDR_X = THREE.Math.degToRad(rotationAngulares.piernaDR); 
+                }
+
+                var rotationRodillaIZQ_X = function(){
+                    rodillaIZQ_X = THREE.Math.degToRad(rotationAngulares.rodillaIZQ);
+                }
+
+                var rotationRodillaDR_X = function(){
+                    rodillaDR_X = THREE.Math.degToRad(rotationAngulares.rodillaDR);
+                }
+
+                var rotationHombro = function(){
+                    hombroIZQ_X = THREE.Math.degToRad(rotationAngulares.hombro_X);
+                    hombroIZQ_Z = THREE.Math.degToRad(rotationAngulares.hombro_Z);
+                }
+
+                var rotationHombroDR = function(){
+                    hombroDR_X = THREE.Math.degToRad(rotationAngulares.hombroDerecho_X);
+                    hombroDR_Z = THREE.Math.degToRad(rotationAngulares.hombroDerecho_Z);
+                }
+
+                var rotationCodoIZQ = function(){
+                    codoIZQ_X = THREE.Math.degToRad(rotationAngulares.codoI_X);
+                }
+
+                var rotationCodoDR = function(){
+                    codoDR_X = THREE.Math.degToRad(rotationAngulares.codoD_X);
+                }
+
+
+                //MENU
+                var gui = new dat.GUI();
+                   //MENU CUERPO
+                gui.add(rotationAngulares, "cuerpoX", -180, 180, 1).onChange(rotationCuerpo);
+                gui.add(rotationAngulares, "cuerpoY", -360, 360, 1).onChange(rotationCuerpo);
+                gui.add(rotationAngulares, "cuerpoZ", -360, 360, 1).onChange(rotationCuerpo);
+                   //MENU PIERNAS
+                gui.add(rotationAngulares, "piernaIZQ", -90, 90, 1).onChange(rotationPiernaIZQ);
+                gui.add(rotationAngulares, "piernaDR", -90, 90, 1).onChange(rotationPiernaDR);
+                gui.add(rotationAngulares, "rodillaIZQ", 0, 90, 1).onChange(rotationRodillaIZQ_X);
+                gui.add(rotationAngulares, "rodillaDR", 0, 90, 1).onChange(rotationRodillaDR_X);
+                  //MENU BRAZOS
+                gui.add(rotationAngulares, "hombro_X", -180, 90, 1).onChange(rotationHombro);
+                gui.add(rotationAngulares, "hombro_Z", -180, 0, 1).onChange(rotationHombro);
+                gui.add(rotationAngulares, "hombroDerecho_X", -180, 90, 1).onChange(rotationHombroDR);
+                gui.add(rotationAngulares, "hombroDerecho_Z", 0, 180, 1).onChange(rotationHombroDR);
+                gui.add(rotationAngulares, "codoI_X", -90, 0, 1).onChange(rotationCodoIZQ);
+                gui.add(rotationAngulares, "codoD_X", 0, 90, 1).onChange(rotationCodoDR);
+
+                
+        function animate() {
+                render();
+                requestAnimationFrame(animate);
+				stats.update();
+        }
+    
+			
+        function render() {
+            var dtime = Date.now() - startTime;
+            
+            var eulerRot = new THREE.Euler(angleX, angleY, angleZ, 'ZYX');
+                torso.setRotationFromEuler(eulerRot);
+            
+            var eulerPiernaIZQ = new THREE.Euler(piernaIZQ_X, piernaIZ_Y, piernaIZQ_Z, 'ZYX');
+            gluteoIZQ.setRotationFromEuler(eulerPiernaIZQ);
+            
+            var eulerPiernaDR = new THREE.Euler(piernaDR_X, piernaDR_Y, piernaDR_Z, 'ZYX');
+            gluteoDR.setRotationFromEuler(eulerPiernaDR);
+
+            var eulerRodillaIZQ= new THREE.Euler(rodillaIZQ_X, rodillaIZQ_Y, rodillaIZQ_Z, 'ZYX');
+            rodillaIZQ.setRotationFromEuler(eulerRodillaIZQ);
+
+            var eulerRodillaDR= new THREE.Euler(rodillaDR_X, rodillaDR_Y, rodillaDR_Z, 'ZYX');
+            rodillaDR.setRotationFromEuler(eulerRodillaDR);
+
+            var eulerhombroIZQ= new THREE.Euler(hombroIZQ_X, hombroIZQ_Y, hombroIZQ_Z, 'ZYX');
+            hombroIZQ.setRotationFromEuler(eulerhombroIZQ);
+
+            var eulerhombroDR= new THREE.Euler(hombroDR_X, hombroDR_Y, hombroDR_Z, 'ZYX');
+            hombroDR.setRotationFromEuler(eulerhombroDR);
+
+            var eulerCodoIZQ= new THREE.Euler(codoIZQ_X, codoIZQ_Y, codoIZQ_Z, 'ZYX');
+            codoIZQ.setRotationFromEuler(eulerCodoIZQ);
+
+            var eulerCodoDR= new THREE.Euler(codoDR_X, codoDR_Y, codoDR_Z, 'ZYX');
+            codoDR.setRotationFromEuler(eulerCodoDR);
+            
+		    camera.lookAt( 0, 0, 0 );
+            var animate = function () {
+				requestAnimationFrame( animate );
+				renderer.render( scene, camera );
+			};
+            
+            animate();
+        
+
+        }
+			
+		</script>
+	</body>
+</html>
