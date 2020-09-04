@@ -137,7 +137,6 @@
 					}
 				}
 			}
-	
 		//----esfera---------
 		var geoEsfera = new THREE.Geometry();
             var zTemp = 0;
@@ -226,10 +225,10 @@
         cabeza = new THREE.Points(Cubo3, matRec);
                
         
-        //Pegar TODO 
+        //Jerarqui final donde se une todo 
         
              //SOLO PIERNAS  
-        torso.add(pecho, gluteoIZQ, gluteoDR);
+        torso.add(pecho, gluteoIZQ, gluteoDR);//torso es el padre
           //Pegar pierna Izquierda
         gluteoIZQ.add(femurIZQ);
         femurIZQ.add(rodillaIZQ);
@@ -254,6 +253,7 @@
         
         
         //Scena
+		//se agrega aqui la jerarquia torso
          
 		scene.add(torso, camera,arrowX, arrowY, arrowZ);
         
@@ -264,6 +264,7 @@
 		  	camera.position.z = 30;			
 		  	camera.lookAt( origin );
         
+		//-----Aqui hacemos traslaciones de la geometrias----
         //Translacion Cabeza
         cabeza.translateX(1.5);
         cabeza.translateY(3)
@@ -353,11 +354,11 @@
 
         }
     
-                
+        //Aqui empieza la configuracion de los controles         
         //ANGULOS DE ROTACION
-                var rotationAngulares = {
+                var rotationAngulares = { //variables para las barritas de control 
                     
-                    cuerpoX:0,
+                    cuerpoX:0, //casilla x
                     cuerpoY:0,
                     cuerpoZ:0,
                     piernaIZQ:0,
@@ -415,7 +416,7 @@
 
 
                 //MENU
-                var gui = new dat.GUI();
+                var gui = new dat.GUI(); //llamamos la libreria dat.gui
                    //MENU CUERPO
                 gui.add(rotationAngulares, "cuerpoX", -180, 180, 1).onChange(rotationCuerpo);
                 gui.add(rotationAngulares, "cuerpoY", -360, 360, 1).onChange(rotationCuerpo);
@@ -443,12 +444,13 @@
 			
         function render() {
             var dtime = Date.now() - startTime;
+			//aplicamos euler rotacion
             
             var eulerRot = new THREE.Euler(angleX, angleY, angleZ, 'ZYX');
-                torso.setRotationFromEuler(eulerRot);
+                torso.setRotationFromEuler(eulerRot);//padre torso , permite mover todo(rotar) 
             
-            var eulerPiernaIZQ = new THREE.Euler(piernaIZQ_X, piernaIZ_Y, piernaIZQ_Z, 'ZYX');
-            gluteoIZQ.setRotationFromEuler(eulerPiernaIZQ);
+            var eulerPiernaIZQ = new THREE.Euler(piernaIZQ_X, piernaIZ_Y, piernaIZQ_Z, 'ZYX'); //angulos para rotar 
+            gluteoIZQ.setRotationFromEuler(eulerPiernaIZQ);//padre de pierna izq
             
             var eulerPiernaDR = new THREE.Euler(piernaDR_X, piernaDR_Y, piernaDR_Z, 'ZYX');
             gluteoDR.setRotationFromEuler(eulerPiernaDR);

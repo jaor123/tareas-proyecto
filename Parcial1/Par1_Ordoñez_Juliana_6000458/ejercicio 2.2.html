@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Ejercicio 2.2 </title>
+    <style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+        #info {
+                position: absolute;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+                color: #FFFFFF;
+            }
+    </style>
+  </head>
+  <body>
+      <div id="info">
+        
+              <br/>
+            Juliana Ordoñez 6000458 <br/>
+                       
+        </div>
+      
+        <script src="js/three.min.js"></script>
+            
+    <script>
+        
+        //variables globales
+        var scene, aspect, camera, renderer;
+
+        init();
+        animate();
+        
+           function init() {
+                scene = new THREE.Scene();
+                aspect = window.innerWidth / window.innerHeight;
+                camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
+                renderer = new THREE.WebGLRenderer();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+				
+        
+			//ELEMENTOS DE ESCENA
+							  
+			var size = 50;
+			var arrowSize = 1;
+			var divisions = size;
+			var origin = new THREE.Vector3( 0, 0, 0 );
+			var x = new THREE.Vector3( 1, 0, 0 );
+			var y = new THREE.Vector3( 0, 1, 0 );
+		  	var z = new THREE.Vector3( 0, 0, 1 );
+			var color1 = new THREE.Color( 0xFFFFFF );
+		  	var color2 = new THREE.Color( 0x333333 );
+		  	var colorR = new THREE.Color( 0xAA0000 );
+		  	var colorG = new THREE.Color( 0x00AA00 );
+		  	var colorB = new THREE.Color( 0x0000AA );
+		  	var colorGd = new THREE.Color( 0x66AA66 );
+		  	
+		  
+        
+            //CREAR LAS FLECHAS QUE INDICAN LOS EJES DE COORDENADAS 3D
+            var arrowX = new THREE.ArrowHelper( x, origin, arrowSize, colorR );
+            var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
+            var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
+
+
+         //Creo geometrias solidas 
+         //-esfera principal solecito -
+        var solGeometry1 = new THREE.SphereGeometry(8,32,32);//esfera 1 tam,ancho,alto
+        var solMaterial1 = new THREE.MeshBasicMaterial({color: 0xCC9900}); //material,amarillo palido
+		
+		//esfera tierra
+        var tierraGeometry1 = new THREE.SphereGeometry(3,32,32);
+        var tierraMaterial1 = new THREE.MeshBasicMaterial({color: 0x339966});//verde
+		//--planetas--
+        //esfera Mercurio
+        var mercurioGeometry1 = new THREE.SphereGeometry(3,32,32);
+        var mercurioMaterial1 = new THREE.MeshBasicMaterial({color: 0x993333});//rojo
+		  //esfera Pluton
+        var plutonGeometry1 = new THREE.SphereGeometry(3,32,32);
+        var plutonMaterial1 = new THREE.MeshBasicMaterial({color: 0x990099});//morado
+		  //esfera Jupiter
+        var jupiterGeometry1 = new THREE.SphereGeometry(3,32,32);
+        var jupiterMaterial1 = new THREE.MeshBasicMaterial({color: 0xFF00CC});
+		//esfera Saturno
+        var saturnoGeometry1 = new THREE.SphereGeometry(3,32,32);
+        var saturnoMaterial1 = new THREE.MeshBasicMaterial({color: 0x99CC00});//verde
+		
+        //esfera de la Luna---------
+        var lunaGeometry1 = new THREE.SphereGeometry(3.5,40,40);
+        var lunaMaterial1 = new THREE.MeshBasicMaterial({color: 0x6699FF});//azul
+
+        // llamado del material de las geo
+        //Solecito
+        sol = new THREE.Mesh(solGeometry1,solMaterial1 );
+            //Tierra
+        tierra = new THREE.Mesh(tierraGeometry1, tierraMaterial1);
+		//-Planetas
+		 //Mercurio
+        mercurio = new THREE.Mesh(mercurioGeometry1, mercurioMaterial1);
+		//pluton
+		pluton = new THREE.Mesh(plutonGeometry1, plutonMaterial1);
+		//Jupiter
+		jupiter = new THREE.Mesh(jupiterGeometry1, jupiterMaterial1);
+		//saturno
+		saturno = new THREE.Mesh(saturnoGeometry1, saturnoMaterial1);
+            //Luna 
+        luna = new THREE.Mesh(lunaGeometry1, lunaMaterial1);
+          
+        
+       
+        //Jerarquias donde se une todo
+        
+        //Sistema solar
+		//sol es el padre
+             sol.add(tierra,mercurio,pluton,jupiter,saturno);
+             tierra.add(luna);
+             
+        //Scena
+		scene.add(sol, camera,arrowX, arrowY, arrowZ);//agregamos jerarquia
+        
+            
+        //MOVER LA CAMARA
+			camera.position.x = 1;
+			camera.position.y = 200;	 
+		  	camera.position.z = 1;			
+		  	camera.lookAt( origin );
+        
+        //Aplicamos las translacion
+
+        //Trans Solecito
+        sol.translateX(-20);
+        sol.translateY(-5)
+        sol.translateZ(1);
+
+        //Trans Tierra
+        tierra.translateX(40);
+        tierra.translateY(10)
+        tierra.translateZ(0);
+
+        //Trans luna 
+        luna.translateX(8);
+        luna.translateY(0);
+        luna.translateZ(0);
+        //---planetas--- 
+         //Trans Mercurio
+        mercurio.translateX(22);
+        mercurio.translateY(0);
+        mercurio.translateZ(0);
+		//Trans Pluton
+        pluton.translateX(12);
+        pluton.translateY(0);
+        pluton.translateZ(0);
+        //Trans Jupiter
+        jupiter.translateX(60);
+        jupiter.translateY(0);
+        jupiter.translateZ(0);
+		//Trans saturno
+        saturno.translateX(70);
+        saturno.translateY(0);
+        saturno.translateZ(0);
+
+        }
+    
+            
+        function animate() {
+                render();
+                requestAnimationFrame(animate);
+        }
+    
+			
+        function render() {
+            
+		    camera.lookAt( 0, 0, 0 );
+            
+            var animate = function () {
+				requestAnimationFrame( animate );
+				renderer.render( scene, camera );
+                tierra.rotateY(0.0005);
+                sol.rotateY(0.00007);
+			};
+   
+            animate();
+        
+        }
+			
+		</script>
+	</body>
+</html>

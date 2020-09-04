@@ -305,7 +305,7 @@
         //tener encuenta siempre agregar a la escena despues de  jerarquia
 		scene.add(Cuerpo, piernaIZ, piernaIZ2, pieIZ, pieIZ2, piernaDR, pieDR,piernaDR2, pieDR2, cintura, brazoIZ1, brazoIZ2, brazoDR1, brazoDR2, braIZ1, braIZ2, braDR1, braDR2, cabeza, camera );
         
-        scene.add( gridHelperXY );
+        scene.add( gridHelperXY );//agrega malla
         
         //PARA MOVER LA CAMARA
 			camera.position.x = 1;
@@ -314,7 +314,7 @@
 		  	camera.lookAt( origin );
 			
         //aqui meto las jerarquias
-		//modificacion de geo ojo !!
+		//modificacion de geometrias ojo !!
         
         //Translacion Cabeza
         cabeza.translateX(2);
