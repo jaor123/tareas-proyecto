@@ -22,6 +22,8 @@
         </div>
       
         <script src="js/three.min.js"></script>
+		<script src="js/controls/OrbitControls.js"></script>
+		    <script src='js/libs/stats.min.js'></script>
             
     <script>
         
@@ -67,7 +69,7 @@
          //Creo geometrias solidas 
          //-esfera principal solecito -
         var solGeometry1 = new THREE.SphereGeometry(8,32,32);//esfera 1 tam,ancho,alto
-        var solMaterial1 = new THREE.MeshBasicMaterial({color: 0xCC9900}); //material,amarillo palido
+        var solMaterial1 = new THREE.MeshBasicMaterial({color: 0xCC9900}); //material para q sea solid,amarillo palido
 		
 		//esfera tierra
         var tierraGeometry1 = new THREE.SphereGeometry(3,32,32);
