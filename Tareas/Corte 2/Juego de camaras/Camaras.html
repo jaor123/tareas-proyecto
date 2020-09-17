@@ -15,9 +15,9 @@
     </head>
     <body>
         <div id="info">
-      Mesa De PING-PONG <br />
+      MESA DE PING-PONG <br />
       William Andres Castro - 6000180 <br/>
-      Juliana Andrea Ordoñes - 6000458 <br/>
+      Juliana Andrea Ordoñez - 6000458 <br/>
       Cristian David Santos - 6000301 <br/>
         </div>
         <script src="js/three.min.js"></script>
@@ -27,8 +27,8 @@
             var scene, aspect, camera, renderer, controls;
             var geometry;
             var object;
-            var startTime = Date.now();
-			      var stats;
+            var startTime = Date.now(); //animacion
+			  var stats;
 
               var container, stats;
 
@@ -46,13 +46,13 @@
                   width: 0.5,
                   height: 1.0,
                   background: new THREE.Color( 0.5, 0.5, 0.7 ),
-                  eye: [ 0, 20, 18 ],
-                  up: [ 0, 1, 0 ],
+                  eye: [ 0, 20, 18 ],//mover posicion de la camara 
+                  up: [ 0, 1, 0 ],//mover el espacio
                   fov: 30,
                   updateCamera: function ( camera, scene, mouseX ) {
 
                     camera.position.x += mouseX * 0.05;
-                    camera.position.x = Math.max( Math.min( camera.position.x, 20 ), - 20 );
+                    camera.position.x = Math.max( Math.min( camera.position.x, 20 ), - 20 );//minimo de la camara
                     camera.lookAt( scene.position );
 
                   }
@@ -120,7 +120,7 @@
                 document.body.appendChild(renderer.domElement);
                 controls = new THREE.OrbitControls(camera, renderer.domElement);
                 stats = new Stats();
-                document.body.appendChild( stats.dom );
+                document.body.appendChild( stats.dom ); 
 
                 //ELEMENTOS DE ESCENA
 
@@ -142,7 +142,7 @@
 
                 //Cubo Mesa o Cmapo de Tenis 
               var geometry = new THREE.BoxGeometry( 6, 0.3, 9 );
-              var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+              var material = new THREE.MeshBasicMaterial( {color: 0x3333FF} );
               var cube1 = new THREE.Mesh( geometry, material );
 
               var material = new THREE.LineBasicMaterial({
@@ -157,7 +157,7 @@
                 var geometry = new THREE.BufferGeometry().setFromPoints( points );
 
                 var line = new THREE.Line( geometry, material );
-
+                 //posiciones 
                 line.translateX(0);
                 line.translateY(0.2);
                 line.translateZ(-4.3);
@@ -227,7 +227,7 @@
                 var geometry5 = new THREE.BufferGeometry().setFromPoints( points5 );
 
                 var line5 = new THREE.Line( geometry5, material );
-
+               
                 line5.translateX(-3);
                 line5.translateY(0.5);
                 line5.translateZ(0);
@@ -299,7 +299,7 @@
                 camera.position.z = -5;
                 camera.lookAt(origin);
 
-                document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+                document.addEventListener( 'mousemove', onDocumentMouseMove, false );//para mover camara 
 
             }
             function onDocumentMouseMove( event ) {
