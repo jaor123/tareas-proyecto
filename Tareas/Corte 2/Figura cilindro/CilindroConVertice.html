@@ -49,6 +49,12 @@
                 var x = new THREE.Vector3(1, 0, 0);
                 var y = new THREE.Vector3(0, 1, 0);
                 var z = new THREE.Vector3(0, 0, 1);
+				
+				var color1 = new THREE.Color( 0xFFFFFF );
+		  	    var color2 = new THREE.Color( 0x333333 );
+		  	    var colorR = new THREE.Color( 0xAA3333 );
+		  	    var colorG = new THREE.Color( 0x33AA33 );
+		  	    var colorB = new THREE.Color( 0x333366 );
 
                 //CREAR LAS GRILLAS PARA EL ESCENARIO
                 var axesHelper = new THREE.AxesHelper(size);
@@ -164,7 +170,7 @@
             var v18 = new THREE.Vector3( 0, 4, 0);
 
 
-            //tabas 2  lateral 
+            // triangulos laterales 
             geoTriangulo8.vertices.push( v1 );
 			geoTriangulo8.vertices.push( v2 );
 			geoTriangulo8.vertices.push( v9 );
@@ -229,7 +235,7 @@
 			geoTriangulo23.vertices.push( v16);
 			geoTriangulo23.vertices.push( v7);
 
-            //Tapa de arriba 
+            //Tapa superior
 
             geoTriangulo24.vertices.push( v9 );
 			geoTriangulo24.vertices.push( v10);
@@ -300,7 +306,7 @@
 
             
 
-                //Materia de creacion de Objeto , colores 
+                //Material de creacion de las geometrias de los triangulos y lo de colores 
                 var matPlano = new THREE.MeshBasicMaterial({ color: 0x003300}); //-Verde degradado-
                 var matPlano1 = new THREE.MeshBasicMaterial({ color: 0x006600}); 
                 var matPlano2 = new THREE.MeshBasicMaterial({ color: 0x009900}); 
