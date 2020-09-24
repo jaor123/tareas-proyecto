@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ejercicio de Cilindro </title>
+        <style>
+            html, body { margin: 0; padding: 0; overflow: hidden; }
+            #info {
+                position: absolute;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+                color: #FFFFFF;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="info">
+      Ejercicio Cilindro Con Vertices <br />
+      Juliana Ordoñez-6000458 <br/>
+        </div>
+        <script src="js/three.min.js"></script>
+        <script src="js/controls/OrbitControls.js"></script>
+        <script>
+           var scene, aspect, camera, renderer, controls;
+            var geometry;
+            var object;
+            var startTime = Date.now();
+
+
+            init();
+            animate();
+
+            function init() {
+                scene = new THREE.Scene();
+                aspect = window.innerWidth / window.innerHeight;
+                camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
+                renderer = new THREE.WebGLRenderer();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+				
+               
+                //ELEMENTOS DE ESCENA
+
+                var size = 10;
+                var arrowSize = 1;
+                var divisions = size;
+                var origin = new THREE.Vector3(0, 0, 0);
+                var x = new THREE.Vector3(1, 0, 0);
+                var y = new THREE.Vector3(0, 1, 0);
+                var z = new THREE.Vector3(0, 0, 1);
+
+                //CREAR LAS GRILLAS PARA EL ESCENARIO
+                var axesHelper = new THREE.AxesHelper(size);
+                var gridHelperXY = new THREE.GridHelper(size, divisions, color1, color1);
+                var gridHelperXZ = new THREE.GridHelper(size, divisions, color2, color2);
+                var gridHelperYZ = new THREE.GridHelper(size, divisions, color2, color2);
+
+                //ROTARLAS PARA QUE QUEDEN EN EL ESPACIO ADECUADO
+                gridHelperXY.rotateOnWorldAxis(x, THREE.Math.degToRad(90));
+                gridHelperXZ.rotateOnWorldAxis(y, THREE.Math.degToRad(90));
+                gridHelperYZ.rotateOnWorldAxis(z, THREE.Math.degToRad(90));
+
+                //CREAR LAS FLECHAS QUE INDICAN LOS EJES DE COORDENADAS 3D
+                var arrowX = new THREE.ArrowHelper(x, origin, arrowSize, colorR);
+                var arrowY = new THREE.ArrowHelper(y, origin, arrowSize, colorG);
+                var arrowZ = new THREE.ArrowHelper(z, origin, arrowSize, colorB);
+
+                //CREAR LAS VARIABLES DE LAS GEOMETRÍAS DE LOS TRIANGULITOS
+                var geoTriangulo = new THREE.Geometry();
+                var geoTriangulo1 = new THREE.Geometry();
+                var geoTriangulo2 = new THREE.Geometry();
+                var geoTriangulo3 = new THREE.Geometry();
+                var geoTriangulo4 = new THREE.Geometry();
+                var geoTriangulo5 = new THREE.Geometry();
+                var geoTriangulo6 = new THREE.Geometry();
+                var geoTriangulo7 = new THREE.Geometry();
+                var geoTriangulo8 = new THREE.Geometry();
+                var geoTriangulo9 = new THREE.Geometry();
+                var geoTriangulo10 = new THREE.Geometry();
+                var geoTriangulo11 = new THREE.Geometry();
+                var geoTriangulo12 = new THREE.Geometry();
+                var geoTriangulo13 = new THREE.Geometry();
+                var geoTriangulo14 = new THREE.Geometry();
+                var geoTriangulo15 = new THREE.Geometry();
+                var geoTriangulo16 = new THREE.Geometry();
+                var geoTriangulo17 = new THREE.Geometry();
+                var geoTriangulo18 = new THREE.Geometry();
+                var geoTriangulo19 = new THREE.Geometry();
+                var geoTriangulo20 = new THREE.Geometry();
+                var geoTriangulo21 = new THREE.Geometry();
+                var geoTriangulo22 = new THREE.Geometry();
+                var geoTriangulo23 = new THREE.Geometry();
+                var geoTriangulo24 = new THREE.Geometry();
+                var geoTriangulo25 = new THREE.Geometry();
+                var geoTriangulo26 = new THREE.Geometry();
+                var geoTriangulo27 = new THREE.Geometry();
+                var geoTriangulo28 = new THREE.Geometry();
+                var geoTriangulo29 = new THREE.Geometry();
+                var geoTriangulo30 = new THREE.Geometry();
+                var geoTriangulo31 = new THREE.Geometry();
+                
+                //VERTICES CARAS INFERIORES 1
+                var v0 = new THREE.Vector3( 0.0, 0.0 , 0.0);
+                var v1 = new THREE.Vector3( 2, 0.0 , 1.0);
+                var v2 = new THREE.Vector3( 2, 0.0 , -1.0);
+
+                var v3 = new THREE.Vector3( -2, 0.0 , 1.0);
+                var v4 = new THREE.Vector3( -2, 0.0 , -1.0);
+
+                var v5 = new THREE.Vector3( 1, 0.0 , 2.0);
+                var v6 = new THREE.Vector3( -1, 0.0 , 2.0);
+
+                var v7 = new THREE.Vector3( -1, 0.0 , -2.0);
+                var v8 = new THREE.Vector3( 1, 0.0 , -2.0);
+
+                //para unir los triangulos con sus vertices 
+                geoTriangulo.vertices.push( v2 );
+                geoTriangulo.vertices.push( v1 );
+                geoTriangulo.vertices.push( v0 );
+
+                geoTriangulo1.vertices.push( v0 );
+                geoTriangulo1.vertices.push( v3 );
+                geoTriangulo1.vertices.push( v4 );
+
+                geoTriangulo2.vertices.push( v0 );
+                geoTriangulo2.vertices.push( v5 );
+                geoTriangulo2.vertices.push( v6 );
+
+                geoTriangulo3.vertices.push( v0 );
+                geoTriangulo3.vertices.push( v7 );
+                geoTriangulo3.vertices.push( v8 );
+
+
+                geoTriangulo4.vertices.push( v0 );
+                geoTriangulo4.vertices.push( v1 );
+                geoTriangulo4.vertices.push( v5 );
+
+                geoTriangulo5.vertices.push( v0 );
+                geoTriangulo5.vertices.push( v4 );
+                geoTriangulo5.vertices.push( v7 );
+
+                geoTriangulo6.vertices.push( v0 );
+                geoTriangulo6.vertices.push( v6 );
+                geoTriangulo6.vertices.push( v3 );
+
+                geoTriangulo7.vertices.push( v0 );
+                geoTriangulo7.vertices.push( v8 );
+                geoTriangulo7.vertices.push( v2 );
+                
+            //Vertices de caras laterales
+            
+            var v9 = new THREE.Vector3( 2, 4.0 , 1.0); 
+            var v10 = new THREE.Vector3( 2, 4.0 , -1.0);   
+            var v11 = new THREE.Vector3( -2, 4.0 , -1.0);  
+            var v12 = new THREE.Vector3( -1, 4.0 , 2);  
+            var v13 = new THREE.Vector3( 1, 4.0 , 2);   
+            var v14 = new THREE.Vector3( -1, 4.0 , -2);  
+            var v15 = new THREE.Vector3( -2, 4.0 , 1);  
+            var v16 = new THREE.Vector3( 1, 4.0 , -2);
+            var v17 = new THREE.Vector3( -3, 5, 1);
+
+
+            var v18 = new THREE.Vector3( 0, 4, 0);
+
+
+            //tabas 2  lateral 
+            geoTriangulo8.vertices.push( v1 );
+			geoTriangulo8.vertices.push( v2 );
+			geoTriangulo8.vertices.push( v9 );
+
+            geoTriangulo9.vertices.push( v2 );
+			geoTriangulo9.vertices.push( v8 );
+			geoTriangulo9.vertices.push( v10 );
+
+            geoTriangulo10.vertices.push( v4 );
+			geoTriangulo10.vertices.push( v3 );
+			geoTriangulo10.vertices.push( v11 );
+
+            geoTriangulo11.vertices.push( v6 );
+			geoTriangulo11.vertices.push( v5 );
+			geoTriangulo11.vertices.push( v12 );
+
+            geoTriangulo12.vertices.push( v5 );
+			geoTriangulo12.vertices.push( v1 );
+			geoTriangulo12.vertices.push( v13 );
+
+            geoTriangulo13.vertices.push( v7 );
+			geoTriangulo13.vertices.push( v4 );
+			geoTriangulo13.vertices.push( v14 );
+
+            geoTriangulo14.vertices.push( v3 );
+			geoTriangulo14.vertices.push( v6 );
+			geoTriangulo14.vertices.push( v15 );
+
+            geoTriangulo15.vertices.push( v8 );
+			geoTriangulo15.vertices.push( v7 );
+			geoTriangulo15.vertices.push( v16 );
+
+            geoTriangulo16.vertices.push( v10 );
+			geoTriangulo16.vertices.push( v9 );
+			geoTriangulo16.vertices.push( v2 );
+
+            geoTriangulo17.vertices.push( v9 );
+			geoTriangulo17.vertices.push( v13);
+			geoTriangulo17.vertices.push( v1);
+
+            geoTriangulo18.vertices.push( v13 );
+			geoTriangulo18.vertices.push( v12);
+			geoTriangulo18.vertices.push( v5);
+
+            geoTriangulo19.vertices.push( v11 );
+			geoTriangulo19.vertices.push( v14);
+			geoTriangulo19.vertices.push( v4);
+
+            geoTriangulo20.vertices.push( v12 );
+			geoTriangulo20.vertices.push( v15);
+			geoTriangulo20.vertices.push( v6);
+
+            geoTriangulo21.vertices.push( v15 );
+			geoTriangulo21.vertices.push( v11);
+			geoTriangulo21.vertices.push( v3);
+
+            geoTriangulo22.vertices.push( v16 );
+			geoTriangulo22.vertices.push( v10);
+			geoTriangulo22.vertices.push( v8);
+
+            geoTriangulo23.vertices.push( v14 );
+			geoTriangulo23.vertices.push( v16);
+			geoTriangulo23.vertices.push( v7);
+
+            //Tapa de arriba 
+
+            geoTriangulo24.vertices.push( v9 );
+			geoTriangulo24.vertices.push( v10);
+			geoTriangulo24.vertices.push( v18);
+
+            geoTriangulo25.vertices.push( v13);
+			geoTriangulo25.vertices.push( v9);
+			geoTriangulo25.vertices.push( v18);
+
+            geoTriangulo26.vertices.push( v16);
+			geoTriangulo26.vertices.push( v18);
+			geoTriangulo26.vertices.push( v10);
+
+            geoTriangulo27.vertices.push( v15);
+			geoTriangulo27.vertices.push( v18);
+			geoTriangulo27.vertices.push( v11);
+
+            geoTriangulo28.vertices.push( v13);
+			geoTriangulo28.vertices.push( v18);
+			geoTriangulo28.vertices.push( v12);
+
+            geoTriangulo29.vertices.push( v14);
+			geoTriangulo29.vertices.push( v11);
+			geoTriangulo29.vertices.push( v18);
+
+            geoTriangulo30.vertices.push( v14);
+			geoTriangulo30.vertices.push( v18);
+			geoTriangulo30.vertices.push( v16);
+
+            geoTriangulo31.vertices.push( v12 );
+			geoTriangulo31.vertices.push( v18 );
+			geoTriangulo31.vertices.push( v15 );
+
+                     
+                //caras
+                geoTriangulo.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo1.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo2.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo3.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo4.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo5.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo6.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo7.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo8.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo9.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo10.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo11.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo12.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo13.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo14.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo15.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo16.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo17.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo18.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo19.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo20.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo21.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo22.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo23.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo24.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo25.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo26.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo27.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo28.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo29.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo30.faces.push(new THREE.Face3(0,1,2));
+                geoTriangulo31.faces.push(new THREE.Face3(0,1,2));
+
+            
+
+                //Materia de creacion de Objeto , colores 
+                var matPlano = new THREE.MeshBasicMaterial({ color: 0x003300}); //-Verde degradado-
+                var matPlano1 = new THREE.MeshBasicMaterial({ color: 0x006600}); 
+                var matPlano2 = new THREE.MeshBasicMaterial({ color: 0x009900}); 
+                var matPlano3 = new THREE.MeshBasicMaterial({ color: 0x00CC00});  
+                var matPlano4 = new THREE.MeshBasicMaterial({ color: 0x00FF00}); 
+                var matPlano5 = new THREE.MeshBasicMaterial({ color: 0x006633});  
+                var matPlano6 = new THREE.MeshBasicMaterial({ color: 0x009933}); 
+                var matPlano7 = new THREE.MeshBasicMaterial({ color: 0x00CC33}); 
+                var matPlano8 = new THREE.MeshBasicMaterial({ color: 0x00FF33}); 
+
+                //materiales creacion del objeto
+                var triangulo = new THREE.Mesh (geoTriangulo, matPlano);
+                var triangulo1 = new THREE.Mesh (geoTriangulo1, matPlano1);
+                var triangulo2 = new THREE.Mesh (geoTriangulo2, matPlano2);
+                var triangulo3 = new THREE.Mesh (geoTriangulo3, matPlano3);
+                var triangulo4 = new THREE.Mesh (geoTriangulo4, matPlano4);
+                var triangulo5 = new THREE.Mesh (geoTriangulo5, matPlano5);
+                var triangulo6 = new THREE.Mesh (geoTriangulo6, matPlano6);
+                var triangulo7 = new THREE.Mesh (geoTriangulo7, matPlano7);
+
+                var triangulo8 = new THREE.Mesh( geoTriangulo8, matPlano);
+                var triangulo9 = new THREE.Mesh( geoTriangulo9, matPlano7 );
+                var triangulo10 = new THREE.Mesh( geoTriangulo10, matPlano1 );
+                var triangulo11 = new THREE.Mesh( geoTriangulo11, matPlano2 );
+                var triangulo12 = new THREE.Mesh( geoTriangulo12, matPlano4 );
+                var triangulo13 = new THREE.Mesh( geoTriangulo13, matPlano5 );
+                var triangulo14 = new THREE.Mesh( geoTriangulo14, matPlano6 );
+                var triangulo15 = new THREE.Mesh( geoTriangulo15, matPlano3 );
+                var triangulo16 = new THREE.Mesh( geoTriangulo16, matPlano8 );
+                var triangulo17 = new THREE.Mesh( geoTriangulo17, matPlano8 );
+                var triangulo18 = new THREE.Mesh( geoTriangulo18, matPlano8 );
+                var triangulo19 = new THREE.Mesh( geoTriangulo19, matPlano8 );
+                var triangulo20 = new THREE.Mesh( geoTriangulo20, matPlano8 );
+                var triangulo21 = new THREE.Mesh( geoTriangulo21, matPlano8 );
+                var triangulo22 = new THREE.Mesh( geoTriangulo22, matPlano8 );
+                var triangulo23 = new THREE.Mesh( geoTriangulo23, matPlano8 );
+
+                var triangulo24 = new THREE.Mesh( geoTriangulo24, matPlano );
+                var triangulo25 = new THREE.Mesh( geoTriangulo25, matPlano4 );
+                var triangulo26 = new THREE.Mesh( geoTriangulo26, matPlano7 );
+                var triangulo27 = new THREE.Mesh( geoTriangulo27, matPlano1 );
+                var triangulo28 = new THREE.Mesh( geoTriangulo28, matPlano3 );
+                var triangulo29 = new THREE.Mesh( geoTriangulo29, matPlano5 );
+                var triangulo30 = new THREE.Mesh( geoTriangulo30, matPlano3 );
+                var triangulo31 = new THREE.Mesh( geoTriangulo31, matPlano6 );
+                
+            
+                ///pIRAMIDE
+
+                //AGREGAR A LA ESCENA
+
+                  //scena base
+                scene.add(triangulo,triangulo1,triangulo2,triangulo3,triangulo4,triangulo5,triangulo6,
+                           triangulo7);
+
+                    //scena Lateral 1
+                    scene.add(triangulo8,triangulo9,triangulo10,triangulo11,triangulo12,triangulo13,triangulo13,
+                           triangulo14,triangulo15,triangulo16,triangulo17,triangulo18,triangulo19,triangulo20 );
+
+                    scene.add(triangulo21,triangulo22,triangulo23,triangulo24,triangulo25,triangulo26,triangulo27,
+                           triangulo28,triangulo29,triangulo30,triangulo31);       
+                
+                scene.add(gridHelperXZ);
+                scene.add(arrowX);
+                scene.add(arrowY);
+                scene.add(arrowZ);
+
+
+                //MOVER LA CAMARA
+                camera.position.x = 5;
+                camera.position.y = 10;
+                camera.position.z = 10;
+
+                camera.lookAt(origin);
+            }
+            function animate() {
+                render();
+                requestAnimationFrame(animate);
+				
+            }
+            function render() {
+                var dtime = Date.now() - startTime;
+                camera.lookAt(0, 0, 0);
+                renderer.render(scene, camera);
+            }
+        
+        </script>
+    </body>
+</html>
