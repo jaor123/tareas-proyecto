@@ -1,0 +1,258 @@
+<! DOCTYPE html >
+< html >
+  < cabeza >
+    < título > Cubo poligonal </ título >
+    < estilo >
+      html ,  cuerpo { margen : 0 ; acolchado : 0 ; desbordamiento : oculto; }
+    </ estilo >
+  </ cabeza >
+  < cuerpo >
+    < script  src = " js / three.js " > </ script >
+	< script  src = " js / controls / OrbitControls.js " > </ script >
+    < guión >
+		var  escena ,  aspecto ,  cámara ,  renderizador ,  controles ;
+	
+		init ( ) ;
+		animar ( ) ;
+	
+		function  init ( ) {
+			escena  =  nuevo  TRES . Escena ( ) ;
+			aspecto  =  ventana . innerWidth / ventana . innerHeight ;
+			cámara  =  nuevo  TRES . PerspectiveCamera (  45 ,  aspecto ,  0,1 ,  1000 ) ;
+			renderizador  =  nuevo  TRES . WebGLRenderer ( ) ;
+			renderizador . setSize (  ventana . innerWidth ,  ventana . innerHeight  ) ;
+			documento . cuerpo . appendChild (  renderizador . domElement  ) ;
+
+			controles  =  nuevos  TRES . OrbitControls (  cámara ,  renderizador . DomElement  ) ;			
+			
+			var  tamaño  =  10 ;
+			var  arrowSize  =  1 ;
+			var  divisiones  =  tamaño ;
+			var  origen  =  nuevo  TRES . Vector3 (  0 ,  0 ,  0  ) ;
+			var  x  =  nuevos  TRES . Vector3 (  1 ,  0 ,  0  ) ;
+			var  y  =  nuevo  TRES . Vector3 (  0 ,  1 ,  0  ) ;
+		  	var  z  =  nuevo  TRES . Vector3 (  0 ,  0 ,  1  ) ;
+			var  color1  =  nuevo  TRES . Color (  0xFFFFFF  ) ;
+		  	var  color2  =  nuevo  TRES . Color (  0x333333  ) ;
+		  	var  colorR  =  nuevo  TRES . Color (  0xAA3333  ) ;
+		  	var  colorG  =  nuevo  TRES . Color (  0x33AA33  ) ;
+		  	var  colorB  =  nuevo  TRES . Color (  0x333366  ) ;
+		  
+		  	// CREAR LAS GRILLAS PARA EL ESCENARIO
+		  	var  axesHelper  =  nuevo  TRES . AxesHelper (  tamaño  ) ;
+		  	var  gridHelperXY  =  nuevo  TRES . GridHelper (  tamaño ,  divisiones ,  color1 ,  color1 ) ;
+		  	var  gridHelperXZ  =  nuevo  TRES . GridHelper (  tamaño ,  divisiones ,  color2 ,  color2  ) ;
+		  	var  gridHelperYZ  =  nuevo  TRES . GridHelper (  tamaño ,  divisiones ,  color2 ,  color2  ) ;
+            
+            // ROTARLAS PARA QUE QUEDEN EN EL ESPACIO ADECUADO
+            gridHelperXY . rotateOnWorldAxis  (  x ,  TRES . Math . degToRad ( 90 )  ) ;
+            gridHelperXZ . rotateOnWorldAxis  (  y ,  TRES . Math . degToRad ( 90 )  ) ;
+            gridHelperYZ . rotateOnWorldAxis  (  z ,  TRES . Math . degToRad ( 90 )  ) ;
+            
+            // CREAR LAS FLECHAS QUE INDICAN LOS EJES DE COORDENADAS 3D
+            var  arrowX  =  nuevo  TRES . ArrowHelper (  x ,  origen ,  arrowSize ,  colorR  ) ;
+            var  arrowY  =  nuevo  TRES . ArrowHelper (  y ,  origen ,  arrowSize ,  colorG  ) ;
+            var  arrowZ  =  nuevo  TRES . ArrowHelper (  z ,  origen ,  arrowSize ,  colorB  ) ;
+			
+			// ILUMINACION 
+			
+			
+			var  hemisphereLight  =  nuevo  TRES . HemisphereLight ( 0xfffafa , 0x000000 ,  .9 )
+			escena . agregar ( hemisphereLight ) ;
+			sol  =  nuevo  TRES . DirectionalLight (  0xcdc1c5 ,  0.9 ) ;
+			sol de . posición . conjunto (  20 , - 10 , 20  ) ;
+			sol de . castShadow  =  verdadero ;
+			escena . agregar ( sol ) ;
+			
+			// CREAR LAS GEOMETRÍAS
+			
+            // BASE CUADRADO
+			
+            var  geoTriangulo  =  nuevo  TRES . Geometría ( ) ;
+			var  geoTriangulo1  =  nuevo  TRES . Geometría ( ) ;
+			
+			// VERTICES
+			var  v0  =  nuevo  TRES . Vector3 (  5,0 ,  0,0 ,  5,0 ) ;
+			var  v1  =  nuevo  TRES . Vector3 (  5,0 , 0,0 ,  - 5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( - 5,0 , 0,0 ,  - 5,0 ) ;
+			geoTriangulo . vértices . empujar (  v0  ) ;
+			geoTriangulo . vértices . empujar (  v1  ) ;
+			geoTriangulo . vértices . empujar (  v2  ) ;
+			var  v0  =  nuevo  TRES . Vector3 (  5,0 ,  0,0 ,  5,0 ) ;
+			var  v1  =  nuevo  TRES . Vector3 (  - 5,0 , 0,0 ,  - 5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( - 5,0 , 0,0 ,  5,0 ) ;
+			geoTriangulo1 . vértices . empujar (  v0  ) ;
+			geoTriangulo1 . vértices . empujar (  v1  ) ;
+			geoTriangulo1 . vértices . empujar (  v2  ) ;
+			
+			// BASE CARAS
+			
+			geoTriangulo . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 2 , 1 )  ) ;
+			geoTriangulo . computeFaceNormals ( ) ;
+			geoTriangulo1 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 2 , 1 )  ) ;
+			geoTriangulo1 . computeFaceNormals ( ) ;
+			
+			  // CUADRADO TAPA
+			
+            var  geoTriangulo2  =  nuevo  TRES . Geometría ( ) ;
+			var  geoTriangulo3  =  nuevo  TRES . Geometría ( ) ;
+			
+			// VERTICES
+			var  v0  =  nuevo  TRES . Vector3 (  5,0 ,  8,0 ,  5,0 ) ;
+			var  v1  =  nuevo  TRES . Vector3 (  5,0 , 8,0 ,  - 5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( - 5,0 , 8,0 ,  - 5,0 ) ;
+			geoTriangulo2 . vértices . empujar (  v0  ) ;
+			geoTriangulo2 . vértices . empujar (  v1  ) ;
+			geoTriangulo2 . vértices . empujar (  v2  ) ;
+			var  v0  =  nuevo  TRES . Vector3 (  5,0 ,  8,0 ,  5,0 ) ;
+			var  v1  =  nuevo  TRES . Vector3 (  - 5,0 , 8,0 ,  - 5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( - 5,0 , 8,0 ,  5,0 ) ;
+			geoTriangulo3 . vértices . empujar (  v0  ) ;
+			geoTriangulo3 . vértices . empujar (  v1  ) ;
+			geoTriangulo3 . vértices . empujar (  v2  ) ;
+			
+			// CARAS TAPA
+			
+			geoTriangulo2 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo2 . computeFaceNormals ( ) ;
+			geoTriangulo3 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo3 . computeFaceNormals ( ) ;
+			
+			// CUADRADOS TRONCO
+			
+            var  geoTriangulo4  =  nuevo  TRES . Geometría ( ) ;
+			var  geoTriangulo5  =  nuevo  TRES . Geometría ( ) ;
+			var  geoTriangulo6  =  nuevo  TRES . Geometría ( ) ;
+			var  geoTriangulo7  =  nuevo  TRES . Geometría ( ) ;
+			var  geoTriangulo8  =  nuevo  TRES . Geometría ( ) ;
+			var  geoTriangulo9  =  nuevo  TRES . Geometría ( ) ;
+			var  geoTriangulo10  =  nuevo  TRES . Geometría ( ) ;
+			var  geoTriangulo11  =  nuevo  TRES . Geometría ( ) ;
+			
+			// VERTICES
+			
+			var  v0  =  nuevo  TRES . Vector3 (  5,0 ,  0,0 ,  5,0 ) ;  //INFERIOR
+			var  v1  =  nuevo  TRES . Vector3 (  5,0 , 0,0 ,  - 5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( 5,0 , 8,0 ,  - 5,0 ) ;
+			geoTriangulo4 . vértices . empujar (  v0  ) ;
+			geoTriangulo4 . vértices . empujar (  v1  ) ;
+			geoTriangulo4 . vértices . empujar (  v2  ) ;
+			var  v0  =  nuevo  TRES . Vector3 (  5,0 ,  8,0 ,  - 5,0 ) ;  //SUPERIOR
+			var  v1  =  nuevo  TRES . Vector3 (  5,0 , 8,0 ,  5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( 5,0 , 0,0 ,  5,0 ) ;
+			geoTriangulo5 . vértices . empujar (  v0  ) ;
+			geoTriangulo5 . vértices . empujar (  v1  ) ;
+			geoTriangulo5 . vértices . empujar (  v2  ) ;
+			
+			var  v0  =  nuevo  TRES . Vector3 (  5,0 ,  0,0 ,  - 5,0 ) ;  //INFERIOR
+			var  v1  =  nuevo  TRES . Vector3 (  - 5,0 , 0,0 ,  - 5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( - 5,0 , 8,0 ,  - 5,0 ) ;
+			geoTriangulo6 . vértices . empujar (  v0  ) ;
+			geoTriangulo6 . vértices . empujar (  v1  ) ;
+			geoTriangulo6 . vértices . empujar (  v2  ) ;
+			var  v0  =  nuevo  TRES . Vector3 (  - 5,0 ,  8,0 ,  - 5,0 ) ;  //SUPERIOR
+			var  v1  =  nuevo  TRES . Vector3 (  5,0 , 8,0 ,  - 5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( 5,0 , 0,0 ,  - 5,0 ) ;
+			geoTriangulo7 . vértices . empujar (  v0  ) ;
+			geoTriangulo7 . vértices . empujar (  v1  ) ;
+			geoTriangulo7 . vértices . empujar (  v2  ) ;
+			
+			var  v0  =  nuevo  TRES . Vector3 (  - 5,0 ,  0,0 ,  - 5,0 ) ;  //INFERIOR
+			var  v1  =  nuevo  TRES . Vector3 (  - 5,0 , 0,0 ,  5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( - 5,0 , 8,0 ,  5,0 ) ;
+			geoTriangulo8 . vértices . empujar (  v0  ) ;
+			geoTriangulo8 . vértices . empujar (  v1  ) ;
+			geoTriangulo8 . vértices . empujar (  v2  ) ;
+			var  v0  =  nuevo  TRES . Vector3 (  - 5,0 ,  8,0 ,  5,0 ) ;  //SUPERIOR
+			var  v1  =  nuevo  TRES . Vector3 (  - 5,0 , 8,0 ,  - 5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( - 5,0 , 0,0 ,  - 5,0 ) ;
+			geoTriangulo9 . vértices . empujar (  v0  ) ;
+			geoTriangulo9 . vértices . empujar (  v1  ) ;
+			geoTriangulo9 . vértices . empujar (  v2  ) ;
+			
+			var  v0  =  nuevo  TRES . Vector3 (  - 5,0 ,  0,0 ,  5,0 ) ;  //INFERIOR
+			var  v1  =  nuevo  TRES . Vector3 (  5,0 , 0,0 ,  5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( 5,0 , 8,0 ,  5,0 ) ;
+			geoTriangulo10 . vértices . empujar (  v0  ) ;
+			geoTriangulo10 . vértices . empujar (  v1  ) ;
+			geoTriangulo10 . vértices . empujar (  v2  ) ;
+			var  v0  =  nuevo  TRES . Vector3 (  5,0 ,  8,0 ,  5,0 ) ;  //SUPERIOR
+			var  v1  =  nuevo  TRES . Vector3 (  - 5,0 , 8,0 ,  5,0 ) ;
+			var  v2  =  nuevo  TRES . Vector3 ( - 5,0 , 0,0 ,  5,0 ) ;
+			geoTriangulo11 . vértices . empujar (  v0  ) ;
+			geoTriangulo11 . vértices . empujar (  v1  ) ;
+			geoTriangulo11 . vértices . empujar (  v2  ) ;
+			
+			// CARAS TRONCO
+			
+			geoTriangulo4 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo4 . computeFaceNormals ( ) ;
+			geoTriangulo5 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo5 . computeFaceNormals ( ) ;
+			
+			geoTriangulo6 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo6 . computeFaceNormals ( ) ;
+			geoTriangulo7 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo7 . computeFaceNormals ( ) ;
+			
+			geoTriangulo8 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo8 . computeFaceNormals ( ) ;
+			geoTriangulo9 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo9 . computeFaceNormals ( ) ;
+			
+			geoTriangulo10 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo10 . computeFaceNormals ( ) ;
+			geoTriangulo11 . caras . empujar (  nuevo  TRES . Cara3 ( 0 , 1 , 2 )  ) ;
+			geoTriangulo11 . computeFaceNormals ( ) ;
+			
+			// MATERIAL Y CREACIÓN DEL OBJETO
+            var  matPlano  =  nuevo  TRES . MeshLambertMaterial (  {  color : 'amarillo'  }  ) ;
+			var  matPlano1  =  nuevo  TRES . MeshLambertMaterial (  {  color : 'rojo'  }  ) ;
+			var  matPlano2  =  nuevo  TRES . MeshLambertMaterial (  {  color : 'azul'  }  ) ;
+			
+			// CREAR LOS OBJETOS
+			
+			triangulo  =  nuevo  TRES . Malla (  geoTriangulo ,  matPlano  ) ;
+			triangulo1  =  nuevo  TRES . Malla (  geoTriangulo1 ,  matPlano  ) ;
+			triangulo2  =  nuevo  TRES . Malla (  geoTriangulo2 ,  matPlano2  ) ;
+			triangulo3  =  nuevo  TRES . Malla (  geoTriangulo3 ,  matPlano2  ) ;
+			triangulo4  =  nuevo  TRES . Malla (  geoTriangulo4 ,  matPlano1  ) ;
+			triangulo5  =  nuevo  TRES . Malla (  geoTriangulo5 ,  matPlano1  ) ;
+			triangulo6  =  nuevo  TRES . Malla (  geoTriangulo6 ,  matPlano1  ) ;
+			triangulo7  =  nuevo  TRES . Malla (  geoTriangulo7 ,  matPlano1  ) ;
+			triangulo8  =  nuevo  TRES . Malla (  geoTriangulo8 ,  matPlano1  ) ;
+			triangulo9  =  nuevo  TRES . Malla (  geoTriangulo9 ,  matPlano1  ) ;
+			triangulo10  =  nuevo  TRES . Malla (  geoTriangulo10 ,  matPlano1  ) ;
+			triangulo11  =  nuevo  TRES . Malla (  geoTriangulo11 ,  matPlano1  ) ;
+			
+		  	// AGREGAR A LA ESCENA
+			
+		  	escena . sumar (  triangulo ,  triangulo1 ,  triangulo2 ,  triangulo3  ) ;
+			escena . sumar (  triangulo4 ,  triangulo5 ) ;
+			escena . sumar (  triangulo6 ,  triangulo7 ) ;
+			escena . sumar (  triangulo8 ,  triangulo9 ) ;
+			escena . agregar (  triangulo10 ,  triangulo11 ) ;
+            escena . agregar (  gridHelperXZ  ) ;
+		  	escena . agregar (  flechaX  ) ;	
+		  	escena . agregar (  flechaY  ) ;	
+		  	escena . agregar (  flechaZ  ) ;	
+			
+			la cámara . posición . x  =  - 20 ;
+			la cámara . posición . y  =  10 ;	 
+		  	la cámara . posición . z  =   10 ;
+			
+		  	la cámara . lookAt (  origen  ) ;
+			}
+    
+    function  animate ( )  {
+        render ( ) ;
+		controles . actualizar ( ) ;
+        requestAnimationFrame (  animado  ) ;
+    }
+    
+    function  render ( ) {
+        renderizador . render (  escena ,  cámara  ) ;
+    }
+    </ script >
+  </ cuerpo >
+</ html >
